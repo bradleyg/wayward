@@ -8,7 +8,7 @@
     "routes",
     "formidable"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Bradley Griffiths <bradley.griffiths@gmail.com>",
   "repository": {
     "type": "git",
