@@ -15,7 +15,7 @@ app.listen(port)
 // Port to start app on.  
 
 res.send(body, statusCode)
-// Body can be an object or string. Content-type will be set accordingly (application/json or text/html) 
+// Body can be an object or string. ContentType will be set accordingly (application/json or text/html)
 // Status code defaults to 200. Defaults can be overwritten, both fields are optional.  
 
 res.render(templateName, data)  
