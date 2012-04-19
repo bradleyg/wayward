@@ -1,5 +1,5 @@
 ###Wayward  
-Minimal http framework with routes, sessions + body/param/file parsing.  
+Minimal http framework with routes, sessions, templating + body/param/file parsing.  
 
 ```npm install wayward```
 
