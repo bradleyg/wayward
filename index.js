@@ -3,9 +3,7 @@ var formidable = require('formidable')
 var router = require('routes').Router()
 
 var get = function(route, cb) {
-  router.addRoute('/GET' + route, function(req, res){
-    cb(req, res)
-  }) 
+  router.addRoute('/GET' + route, cb) 
 }
 
 var post = function(route, cb) {
