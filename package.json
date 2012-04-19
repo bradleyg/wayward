@@ -1,0 +1,33 @@
+{
+  "name": "wayward",
+  "description": "Minimal http framework with routes + body/param/file parsing",
+  "keywords": [
+    "router",
+    "http",
+    "framework",
+    "routes",
+    "formidable"
+  ],
+  "version": "0.0.2",
+  "author": "Bradley Griffiths <bradley.griffiths@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bradleyg/wayward.git"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "main": "./index.js",
+  "dependencies": {
+    "formidable": "1.0.9",
+    "routes": "https://github.com/bradleyg/routes.js/tarball/master"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "request": "*"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  }
+}
