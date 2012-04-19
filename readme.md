@@ -15,11 +15,12 @@ app.listen(port)
 // Port to start app on.  
 
 res.send(body, statusCode)
-// Body can be an object or string. Content type will default to 'application/json' or 'text/html' respectivly. 
-// Status code defaults to 200. Default content types/status codes can be overwritten, both fields are optional.  
+// Body can be an object or string. Content-type will be set accordingly (application/json or text/html) 
+// Status code defaults to 200. Defaults can be overwritten, both fields are optional.  
 
-res.render(name, data)  
-// If a callback is provided as the third param the html is returned rather than being sent to the browser.
+res.render(templateName, data)  
+// Only available if templating is enabled
+// A callback can be provided as a third arg. The html will then be returned instead of being sent.
  
 req.session[key] = value
 var value = req.session[key]
