@@ -1,7 +1,6 @@
-var should = require('should')
-var http = require('http')
 var app = require('../index')
 var request = require('request')
+var should = require('should')
     
 app.get('/test/:param1/:param2?', function(req, res){
   var data = JSON.stringify(req.params)
