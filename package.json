@@ -1,6 +1,6 @@
 {
   "name": "wayward",
-  "description": "Minimal http framework with routes, sessions + body/param/file parsing",
+  "description": "Minimal http framework with routes, sessions, templating + body/param/file parsing",
   "keywords": [
     "router",
     "http",
@@ -10,7 +10,7 @@
     "sessions",
     "cookies"
   ],
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Bradley Griffiths <bradley.griffiths@gmail.com>",
   "repository": {
     "type": "git",
@@ -23,7 +23,8 @@
   "dependencies": {
     "formidable": "1.0.9",
     "routes": "https://github.com/bradleyg/routes.js/tarball/master",
-    "client-sessions": "0.0.6"
+    "client-sessions": "0.0.6",
+    "handlebars": "1.0.5beta"
   },
   "devDependencies": {
     "mocha": "*",

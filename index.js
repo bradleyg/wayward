@@ -2,7 +2,10 @@ var http = require('http')
 var formidable = require('formidable')
 var router = require('routes').Router()
 var sessions = require('client-sessions')
+var handlebars = require('handlebars')
+var fs = require('fs')
 var handleSession = false
+var templates = {}
 
 // public
 
@@ -31,31 +34,36 @@ var session = function(opts) {
   handleSession = sessions(opts)
 }
 
-// private
-
-var handle = function(req, res) {
-  res.send = send
+var template = function(opts) {
+  if(typeof opts.dir === 'undefined') throw new Error('template directory is required')
   
-  var match = router.match('/' + req.method + req.url)
-  if( ! match) {
-    return res.send('404, Not found', 404)
-  }
+  var templateList = fs.readdirSync(opts.dir)
   
-  req.params = match.params
-  
-  if( ! handleSession) {
-    return match.fn(req, res)
-  }
-  
-  handleSession(req, res, function(err){
-    if(err) throw new Error(err)
-    match.fn(req, res)
+  templateList.forEach(function(val){
+    var source = fs.readFileSync(opts.dir + '/' + val).toString()
+    templates[val] = handlebars.compile(source)
   })
+}
+
+// appended
+
+var render = function(name, data, cb) {
+  var template = templates[name]
+  
+  if( ! template) throw new Error('template does not exist')
+  
+  var html = template(data)
+  
+  if(typeof cb === 'function') {
+    return cb(null, html)
+  }
+  
+  this.send(html)
 }
 
 var send = function(body, code) {  
   body = body || ''
-  code = code || 200
+  code = code || this.statusCode || 200
   
   var contentType = this.getHeader('content-type')
   
@@ -71,9 +79,33 @@ var send = function(body, code) {
   this.end(body)
 }
 
+// private
+
+var handle = function(req, res) {
+  res.send = send
+  res.render = render
+
+  var match = router.match('/' + req.method + req.url)
+  if( ! match) {
+    return res.send('404, Not found', 404)
+  }
+
+  req.params = match.params
+
+  if( ! handleSession) {
+    return match.fn(req, res)
+  }
+
+  handleSession(req, res, function(err){
+    if(err) throw new Error(err)
+    match.fn(req, res)
+  })
+}
+
 module.exports = {
   get: get,
   post: post,
   session: session,
+  template: template,
   listen: listen
 }

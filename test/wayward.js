@@ -1,10 +1,14 @@
 var app = require('../index')
 var request = require('request')
 var should = require('should')
+var path = require('path')
 
 // app
 
 app.session({secret: 'supersecret'})
+app.template({dir: path.join(__dirname, '../example/templates')})
+
+// methods
     
 app.get('/test/:param1/:param2?', function(req, res){
   res.send(req.params, 200) // with status code
@@ -16,6 +20,8 @@ app.post('/test/:param1/:param2?', function(req, res){
   res.send(req.params) // without status code
 })
 
+// sessions
+
 app.get('/set/:foo', function(req, res){
   req.session.foo = req.params.foo
   res.setHeader('Content-Type', 'text/plain') // overide content-type
@@ -24,6 +30,22 @@ app.get('/set/:foo', function(req, res){
 
 app.get('/get', function(req, res){
   res.send(req.session)
+})
+
+// templates
+
+app.get('/template/:name', function(req, res){
+  var data = {"name": req.params.name}
+  res.statusCode = 201 // overwrite status code
+  res.render('index.html', data)
+})
+
+app.get('/template2/:name', function(req, res){
+  var data = {name: req.params.name}
+  res.render('index.html', data, function(err, html){ // return html
+    if(err) throw new Error(err)
+    res.send(html)
+  })
 })
 
 app.listen(3000)
@@ -137,6 +159,32 @@ describe("wayward", function () {
         res.statusCode.should.equal(200)
         res.headers['content-type'].should.equal('application/json')
         body.should.equal('{"foo":"bar"}')
+        done()
+      })      
+    })
+    
+  })
+  
+  describe('templates', function(){
+    
+    it('should return a rendered html template', function(done){
+      request('http://localhost:3000/template/bradley', function(err, res, body){
+        should.not.exist(err)
+        should.exist(res)
+        res.statusCode.should.equal(201)
+        res.headers['content-type'].should.equal('text/html')
+        body.should.equal('<p>Hello, my name is bradley.</p>')
+        done()
+      })      
+    })
+    
+    it('should return a rendered html template via a callback', function(done){
+      request('http://localhost:3000/template2/bradley', function(err, res, body){
+        should.not.exist(err)
+        should.exist(res)
+        res.statusCode.should.equal(200)
+        res.headers['content-type'].should.equal('text/html')
+        body.should.equal('<p>Hello, my name is bradley.</p>')
         done()
       })      
     })
