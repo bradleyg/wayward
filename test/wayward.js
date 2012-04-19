@@ -1,22 +1,34 @@
 var app = require('../index')
 var request = require('request')
 var should = require('should')
+
+// app
+
+app.session({secret: 'supersecret'})
     
 app.get('/test/:param1/:param2?', function(req, res){
-  var data = JSON.stringify(req.params)
-  res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(data)
+  res.send(req.params, 200) // with status code
 })
 
 app.post('/test/:param1/:param2?', function(req, res){
   req.params.body = req.body
   req.params.files = req.files
-  var data = JSON.stringify(req.params)
-  res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(data)
+  res.send(req.params) // without status code
+})
+
+app.get('/set/:foo', function(req, res){
+  req.session.foo = req.params.foo
+  res.setHeader('Content-Type', 'text/plain') // overide content-type
+  res.send('session set')
+})
+
+app.get('/get', function(req, res){
+  res.send(req.session)
 })
 
 app.listen(3000)
+
+// tests
 
 describe("wayward", function () {
 
@@ -103,8 +115,32 @@ describe("wayward", function () {
       })      
     })
     
+  })
+  
+  describe('storing sessions', function(){
+    
+    it('should set a session and return correct headers', function(done){
+      request('http://localhost:3000/set/bar', function(err, res, body){
+        should.not.exist(err)
+        should.exist(res)
+        res.statusCode.should.equal(200)
+        res.headers['content-type'].should.equal('text/plain')
+        body.should.equal('session set')
+        done()
+      })      
+    })
+    
+    it('should return the session data stored with correct headers', function(done){
+      request('http://localhost:3000/get', function(err, res, body){
+        should.not.exist(err)
+        should.exist(res)
+        res.statusCode.should.equal(200)
+        res.headers['content-type'].should.equal('application/json')
+        body.should.equal('{"foo":"bar"}')
+        done()
+      })      
+    })
+    
   })  
 
 })
-
-
