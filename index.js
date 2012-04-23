@@ -72,7 +72,6 @@ var send = function(body, code) {
     contentType = contentType || 'application/json'
   }
 
-  this.setHeader('Content-Length', body.length)
   this.setHeader('Content-Type', contentType || 'text/html')
   this.statusCode = code
   this.emit('header')
