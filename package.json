@@ -1,6 +1,6 @@
 {
   "name": "wayward",
-  "description": "Minimal http framework with routes, sessions, templating + body/param/file parsing",
+  "description": "Minimal http framework with the basics.",
   "keywords": [
     "router",
     "http",
@@ -8,9 +8,10 @@
     "routes",
     "formidable",
     "sessions",
-    "cookies"
+    "cookies",
+    "static"
   ],
-  "version": "0.0.9",
+  "version": "0.1.0",
   "author": "Bradley Griffiths <bradley.griffiths@gmail.com>",
   "repository": {
     "type": "git",
