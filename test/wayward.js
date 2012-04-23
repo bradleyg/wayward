@@ -7,6 +7,7 @@ var path = require('path')
 
 app.session({secret: 'supersecret'})
 app.template({dir: path.join(__dirname, '../example/templates')})
+app.static({dir: path.join(__dirname, '../example/static'), url: '/public'})
 
 // methods
     
@@ -185,6 +186,29 @@ describe("wayward", function () {
         res.statusCode.should.equal(200)
         res.headers['content-type'].should.equal('text/html')
         body.should.equal('<p>Hello, my name is bradley.</p>')
+        done()
+      })      
+    })
+    
+  })  
+  
+  describe('static', function(){
+    
+    it('should return a static file from public', function(done){
+      request('http://localhost:3000/public/image.jpg', function(err, res, body){
+        should.not.exist(err)
+        should.exist(res)
+        res.statusCode.should.equal(200)
+        res.headers.should.have.property('content-type', 'image/jpeg')
+        done()
+      })      
+    })
+    
+    it('should return a 404 if a static file is missing', function(done){
+      request('http://localhost:3000/public/missing.jpg', function(err, res, body){
+        should.not.exist(err)
+        should.exist(res)
+        res.statusCode.should.equal(404)
         done()
       })      
     })

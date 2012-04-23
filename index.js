@@ -1,8 +1,10 @@
 var http = require('http')
+var path = require('path')
 var formidable = require('formidable')
 var router = require('routes').Router()
 var sessions = require('client-sessions')
 var handlebars = require('handlebars')
+var filed = require('filed')
 var fs = require('fs')
 var handleSession = false
 var templates = {}
@@ -42,6 +44,20 @@ var template = function(opts) {
   templateList.forEach(function(val){
     var source = fs.readFileSync(opts.dir + '/' + val).toString()
     templates[val] = handlebars.compile(source)
+  })
+}
+
+var static = function(opts) {
+  if(typeof opts.dir === 'undefined' || typeof opts.url === 'undefined') {
+    throw new Error('static directory/url is required')
+  }
+
+  var route = path.normalize(opts.url + '/*')
+
+  this.get(route, function(req, res){    
+    var filename = req.url.replace(opts.url, '')
+    var filepath = path.normalize(opts.dir + '/' + filename)
+    filed(filepath).pipe(res)
   })
 }
 
@@ -106,5 +122,6 @@ module.exports = {
   post: post,
   session: session,
   template: template,
+  static: static,
   listen: listen
 }

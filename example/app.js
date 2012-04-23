@@ -1,7 +1,8 @@
 var app = require('../index')
 
-app.session({secret: 'supersecret'}) // calling this will enable the client-sessions lib
-app.template({dir: __dirname + '/templates'}) // calling this enables handlebars.js templating
+app.session({secret: 'supersecret'}) // enables the client-sessions lib
+app.template({dir: __dirname + '/templates'}) // enables handlebars.js templating
+app.static({dir: __dirname + '/static', url: '/public'}) // enables static file serving
 
 app.get('/set/:foo', function(req, res){
   req.session.foo = req.params.foo

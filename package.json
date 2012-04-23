@@ -10,7 +10,7 @@
     "sessions",
     "cookies"
   ],
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Bradley Griffiths <bradley.griffiths@gmail.com>",
   "repository": {
     "type": "git",
@@ -24,7 +24,8 @@
     "formidable": "1.0.9",
     "routes": "https://github.com/bradleyg/routes.js/tarball/master",
     "client-sessions": "0.0.6",
-    "handlebars": "1.0.5beta"
+    "handlebars": "1.0.5beta",
+    "filed": "0.0.6"
   },
   "devDependencies": {
     "mocha": "*",

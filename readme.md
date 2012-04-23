@@ -33,19 +33,24 @@ app.session(opts)
 
 app.template(opts)
 // Enables handlebars.js templating, 'opts.dir' is required. 
+
+app.static(opts)
+// Enables static file serving, 'opts.dir' and 'opts.url' are required. 
 ```  
 
 ###Deps:
 Additional router documentation: [https://github.com/aaronblohowiak/routes.js](https://github.com/aaronblohowiak/routes.js)  
 Additional session documentation: [https://github.com/benadida/node-client-sessions](https://github.com/benadida/node-client-sessions)  
 Handlebars templating documentation [http://handlebarsjs.com/](http://handlebarsjs.com/)
+Additional static files documentation [https://github.com/mikeal/filed](https://github.com/mikeal/filed)
 
 ###Example app:  
 ```javascript
 var app = require('wayward')
 
-app.session({secret: 'supersecret'}) // calling this will enable the client-sessions lib
-app.template({dir: __dirname + '/templates'}) // calling this enables handlebars.js templating
+app.session({secret: 'supersecret'}) // enables the client-sessions lib
+app.template({dir: __dirname + '/templates'}) // enables handlebars.js templating
+app.static({dir: __dirname + '/static', url: '/public'}) // enables static file serving
 
 app.get('/set/:foo', function(req, res){
   req.session.foo = req.params.foo
@@ -69,7 +74,7 @@ app.post('/template/:name', function(req, res){
   console.log(req.body) // post params
   console.log(req.params) // url segments
   console.log(req.files) // uploaded files
-  
+
   var data = {name: req.params.name}
 
   res.render('index.html', data, function(err, html){ // rendered template in callback
