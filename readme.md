@@ -1,4 +1,4 @@
-###Wayward - Minimal http framework with basics.  
+###Wayward - Minimal http framework with the basics.   
 Install: ```npm install wayward```
 ***
 ###app.get():  
