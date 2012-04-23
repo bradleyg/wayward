@@ -41,7 +41,7 @@ app.static(opts)
 ###Deps:
 Additional router documentation: [https://github.com/aaronblohowiak/routes.js](https://github.com/aaronblohowiak/routes.js)  
 Additional session documentation: [https://github.com/benadida/node-client-sessions](https://github.com/benadida/node-client-sessions)  
-Handlebars templating documentation [http://handlebarsjs.com/](http://handlebarsjs.com/)
+Handlebars templating documentation [http://handlebarsjs.com/](http://handlebarsjs.com/)  
 Additional static files documentation [https://github.com/mikeal/filed](https://github.com/mikeal/filed)
 
 ###Example app:  
