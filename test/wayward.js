@@ -12,7 +12,10 @@ app.static({dir: path.join(__dirname, '../example/static'), url: '/public'})
 // methods
     
 app.get('/test/:param1/:param2?', function(req, res){
-  res.send(req.params, 200) // with status code
+  res.send({
+    params: req.params,
+    query: req.query
+  }, 200) // with status code
 })
 
 app.post('/test/:param1/:param2?', function(req, res){
@@ -91,12 +94,12 @@ describe("wayward", function () {
     })
     
     it('should not return an error for a route that exist', function(done){
-      request('http://localhost:3000/test/exists/exists', function(err, res, body){
+      request('http://localhost:3000/test/exists/exists?query=true', function(err, res, body){
         should.not.exist(err)
         should.exist(res)
         res.statusCode.should.equal(200)
         res.headers['content-type'].should.equal('application/json')
-        body.should.equal('{"param1":"exists","param2":"exists"}')
+        body.should.equal('{"params":{"param1":"exists","param2":"exists"},"query":{"query":"true"}}')
         done()
       })      
     })

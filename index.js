@@ -1,5 +1,6 @@
 var http = require('http')
 var path = require('path')
+var url = require('url')
 var formidable = require('formidable')
 var router = require('routes').Router()
 var sessions = require('client-sessions')
@@ -99,13 +100,16 @@ var send = function(body, code) {
 var handle = function(req, res) {
   res.send = send
   res.render = render
+  
+  var parts = url.parse(req.url, true)
+  var match = router.match('/' + req.method + parts.pathname)
 
-  var match = router.match('/' + req.method + req.url)
   if( ! match) {
     return res.send('404, Not found', 404)
   }
 
   req.params = match.params
+  req.query = parts.query
 
   if( ! handleSession) {
     return match.fn(req, res)
