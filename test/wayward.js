@@ -47,29 +47,7 @@ app.listen(3000)
 
 describe("wayward", function () {
 
-  describe('app.get()', function(){
-    
-    it('should return an error for a route that is too short', function(done){
-      request('http://localhost:3000/test', function(err, res, body){
-        should.not.exist(err)
-        should.exist(res)
-        res.statusCode.should.equal(404)
-        res.headers['content-type'].should.equal('text/plain')
-        body.should.equal('404, Not found')
-        done()
-      })      
-    })
-    
-    it('should return an error for a route that it too long', function(done){
-      request('http://localhost:3000/test/exists/nonvalid/nonvalid', function(err, res, body){
-        should.not.exist(err)
-        should.exist(res)
-        res.statusCode.should.equal(404)
-        res.headers['content-type'].should.equal('text/plain')
-        body.should.equal('404, Not found')
-        done()
-      })      
-    })
+  describe('routing', function(){
     
     it('should return an error if the method is not correct', function(done){
       request({url: 'http://localhost:3000/test/exists', method: 'DELETE'}, function(err, res, body){
