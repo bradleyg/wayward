@@ -11,7 +11,7 @@
     "cookies",
     "static"
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Bradley Griffiths <bradley.griffiths@gmail.com>",
   "repository": {
     "type": "git",
@@ -22,11 +22,11 @@
   },
   "main": "./index.js",
   "dependencies": {
-    "formidable": "1.0.9",
-    "routes": "https://github.com/bradleyg/routes.js/tarball/master",
     "client-sessions": "0.0.6",
-    "handlebars": "1.0.5beta",
-    "filed": "0.0.6"
+    "ecstatic": "0.1.6",
+    "obedient": "0.0.7",
+    "masonry": "0.0.1",
+    "slack": "0.0.2"
   },
   "devDependencies": {
     "mocha": "*",

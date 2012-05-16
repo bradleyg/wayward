@@ -3,32 +3,22 @@ var request = require('request')
 var should = require('should')
 var path = require('path')
 
-// app
+// setup
 
 app.session({secret: 'supersecret'})
 app.template({dir: path.join(__dirname, '../example/templates')})
 app.static({dir: path.join(__dirname, '../example/static'), url: '/public'})
 
-// methods
-    
-app.get('/test/:param1/:param2?', function(req, res){
-  res.send({
-    params: req.params,
-    query: req.query
-  }, 200) // with status code
-})
+// slack middlware
 
-app.post('/test/:param1/:param2?', function(req, res){
-  req.params.body = req.body
-  req.params.files = req.files
-  res.send(req.params) // without status code
+app.get('/test/:param', function(req, res){
+  res.send({slack: true, params: req.params, query: req.query})
 })
 
 // sessions
 
 app.get('/set/:foo', function(req, res){
   req.session.foo = req.params.foo
-  res.setHeader('Content-Type', 'text/plain') // overide content-type
   res.send('session set')
 })
 
@@ -40,13 +30,12 @@ app.get('/get', function(req, res){
 
 app.get('/template/:name', function(req, res){
   var data = {"name": req.params.name}
-  res.statusCode = 201 // overwrite status code
-  res.render('index.html', data)
+  res.render('index.ejs', data)
 })
 
 app.get('/template2/:name', function(req, res){
   var data = {name: req.params.name}
-  res.render('index.html', data, function(err, html){ // return html
+  res.render('index.ejs', data, function(err, html){ // return html
     if(err) throw new Error(err)
     res.send(html)
   })
@@ -65,7 +54,7 @@ describe("wayward", function () {
         should.not.exist(err)
         should.exist(res)
         res.statusCode.should.equal(404)
-        res.headers['content-type'].should.equal('text/html')
+        res.headers['content-type'].should.equal('text/plain')
         body.should.equal('404, Not found')
         done()
       })      
@@ -76,7 +65,7 @@ describe("wayward", function () {
         should.not.exist(err)
         should.exist(res)
         res.statusCode.should.equal(404)
-        res.headers['content-type'].should.equal('text/html')
+        res.headers['content-type'].should.equal('text/plain')
         body.should.equal('404, Not found')
         done()
       })      
@@ -86,62 +75,25 @@ describe("wayward", function () {
       request({url: 'http://localhost:3000/test/exists', method: 'DELETE'}, function(err, res, body){
         should.not.exist(err)
         should.exist(res)
-        res.statusCode.should.equal(404)
-        res.headers['content-type'].should.equal('text/html')
-        body.should.equal('404, Not found')
+        res.statusCode.should.equal(405)
+        res.headers['content-type'].should.equal('text/plain')
+        body.should.equal('405, Method not allowed')
         done()
       })      
     })
     
     it('should not return an error for a route that exist', function(done){
-      request('http://localhost:3000/test/exists/exists?query=true', function(err, res, body){
+      request('http://localhost:3000/test/exists?query=true', function(err, res, body){
         should.not.exist(err)
         should.exist(res)
         res.statusCode.should.equal(200)
         res.headers['content-type'].should.equal('application/json')
-        body.should.equal('{"params":{"param1":"exists","param2":"exists"},"query":{"query":"true"}}')
+        body.should.equal('{"slack":true,"params":{"param":"exists"},"query":{"query":"true"}}')
         done()
       })      
     })
     
   })  
-  
-  describe('app.post()', function(){
-    
-    it('should return an error for a route that is too short', function(done){
-      request({url: 'http://localhost:3000/test', method: 'POST'}, function(err, res, body){
-        should.not.exist(err)
-        should.exist(res)
-        res.statusCode.should.equal(404)
-        res.headers['content-type'].should.equal('text/html')
-        body.should.equal('404, Not found')
-        done()
-      })      
-    })
-    
-    it('should return an error for a route that it too long', function(done){
-      request({url: 'http://localhost:3000/test/exists/nonvalid/nonvalid', method: 'POST'}, function(err, res, body){
-        should.not.exist(err)
-        should.exist(res)
-        res.statusCode.should.equal(404)
-        res.headers['content-type'].should.equal('text/html')
-        body.should.equal('404, Not found')
-        done()
-      })      
-    })
-    
-    it('should include post/files/params for a valid route', function(done){
-      request({url: 'http://localhost:3000/test/exists/exists', method: 'POST', form: {data: 'data'}}, function(err, res, body){
-        should.not.exist(err)
-        should.exist(res)
-        res.statusCode.should.equal(200)
-        res.headers['content-type'].should.equal('application/json')
-        body.should.equal('{"param1":"exists","param2":"exists","body":{"data":"data"},"files":{}}')
-        done()
-      })      
-    })
-    
-  })
   
   describe('storing sessions', function(){
     
@@ -150,7 +102,7 @@ describe("wayward", function () {
         should.not.exist(err)
         should.exist(res)
         res.statusCode.should.equal(200)
-        res.headers['content-type'].should.equal('text/plain')
+        res.headers['content-type'].should.equal('text/html')
         body.should.equal('session set')
         done()
       })      
@@ -174,9 +126,8 @@ describe("wayward", function () {
     it('should return a rendered html template', function(done){
       request('http://localhost:3000/template/bradley', function(err, res, body){
         should.not.exist(err)
-        should.exist(res)
-        res.statusCode.should.equal(201)
-        res.headers['content-type'].should.equal('text/html')
+        should.exist(res.headers)
+        res.statusCode.should.equal(200)
         body.should.equal('<p>Hello, my name is bradley.</p>')
         done()
       })      

@@ -1,31 +1,31 @@
 ###Wayward - Minimal http framework with the basics.   
 Install: ```npm install wayward```
 ***
-###app.get():  
+###app.get() | app.post() | app.delete() | app.put() :  
 ```javascript
 app.get(route, callback)
 ```
-Connect style routing for __GET__ http methods. Missing routes will throw a 404.  
-###app.post():  
+Connect style routing. [More info](https://github.com/bradleyg/obedient).  
+###app.use():  
 ```javascript
-app.post(route, callback)
+app.use(route, middleware)
 ```
-Connect style routing for __POST__ http methods. Missing routes will throw a 404.  
+Connect style middleware. [More info](https://github.com/bradleyg/obedient).  
 ###app.listen():  
 ```javascript
 app.listen(port)
 ```
-Port to start app on.  
+Port to start app on. [More info](https://github.com/bradleyg/obedient).  
 ###res.send():  
 ```javascript
 res.send(body, statusCode)
 ```
-Body can be an object or string. ContentType will be set accordingly (application/json or text/html). Status code defaults to 200. Defaults can be overwritten, both fields are optional.  
+Slack lazy sending of HTTP responses. [More info](https://github.com/bradleyg/slack).  
 ###res.render():  
 ```javascript
 res.render(templateName, data)
 ```
-Only available if templating is enabled. A callback can be provided as a third arg. The html will then be returned instead of being sent.  
+Templating middleware for embedded javascript templates. [More info](https://github.com/bradleyg/masonry)    
 ###req.session[]
 ```javascript
 req.session[key] = value
@@ -41,7 +41,7 @@ Enables the client-sessions lib with options, ```opts.secret``` is required. [Mo
 ```javascript
 app.template(opts)
 ```
-Enables handlebars.js templating, ```opts.dir``` is required. 
+Enables EJS templating, ```opts.dir``` is required. 
 ###app.static()
 ```javascript
 app.static(opts)
@@ -49,10 +49,11 @@ app.static(opts)
 Enables static file serving, ```opts.dir``` and ```opts.url``` are required. 
 ***
 ###Deps:
-Additional router documentation: [https://github.com/aaronblohowiak/routes.js](https://github.com/aaronblohowiak/routes.js)  
+Additional router documentation: [https://github.com/bradleyg/obedient](https://github.com/bradleyg/obedient)  
+Additional slack documentation: [https://github.com/bradleyg/slack](https://github.com/bradleyg/slack)  
+Additional templating documentation [https://github.com/bradleyg/masonry](https://github.com/bradleyg/masonry)  
 Additional session documentation: [https://github.com/benadida/node-client-sessions](https://github.com/benadida/node-client-sessions)  
-Handlebars templating documentation [http://handlebarsjs.com/](http://handlebarsjs.com/)  
-Additional static files documentation [https://github.com/mikeal/filed](https://github.com/mikeal/filed)
+Additional static files documentation [https://github.com/jesusabdullah/node-ecstatic](https://github.com/jesusabdullah/node-ecstatic)
 ***
 ###Examples: 
 [View the examples](https://github.com/bradleyg/wayward/blob/master/example/app.js)  
