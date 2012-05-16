@@ -1,4 +1,3 @@
-var http = require('http')
 var sessions = require('client-sessions')
 var app = require('obedient')
 var masonry = require('masonry')
