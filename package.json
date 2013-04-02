@@ -11,7 +11,7 @@
     "cookies",
     "static"
   ],
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Bradley Griffiths <bradley.griffiths@gmail.com>",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
   "dependencies": {
     "client-sessions": "0.0.6",
     "ecstatic": "0.1.6",
-    "obedient": "0.0.8",
+    "obedient": "0.0.9",
     "masonry": "0.0.2",
     "slack": "0.0.2"
   },
